@@ -1,0 +1,22 @@
+﻿@model IEnumerable<second.Models.Restaurants>
+
+<h2>Список ресторанов</h2>
+<table class="table">
+    @foreach (var cafe in Model)
+    {
+        <tr>
+            <td>@cafe.Name</td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@cafe.ID" method="post">
+                    <a class="btn btn-sm btn-primary" asp-controller="Restaurant" asp-action="Edit" asp-route-id="@cafe.ID">Изменить</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-action="Create">Добавить ресторан</a>
+<br>
+<a asp-controller="Users" asp-action="Index">Назначить менеджера в ресторан</a>

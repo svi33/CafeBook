@@ -1,0 +1,19 @@
+﻿@model second.ViewModels.EditUserViewModel
+@{
+   // ViewBag.Title = "Редактирование пользователя";
+}
+<p></p>
+<form asp-action="Edit" asp-controller="Users">
+ 
+
+    <label asp-for="Email" class="control-label">Email: </label>
+    <label>@Model.Email</label>
+    <p></p>
+    <div class="form-group">
+        <label asp-for="RestaurantID" class="control-label">Выбрать Ресторан:</label>
+        <select asp-for="RestaurantID" asp-items="ViewBag.Restaurants"></select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-default" />
+    </div>
+</form>

@@ -1,0 +1,72 @@
+﻿@model second.Models.Restaurants
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="welcome-area section-padding2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 align-self-center">
+                <div class="welcome-img">
+                    <img src="~/assets/images/welcome-bg.png" class="img-fluid" alt="">
+                </div>
+            </div>
+            <div class="col-md-6 align-self-center">
+                <div class="welcome-text mt-5 mt-md-0">
+                    <h3><span class="style-change">Добро пожаловать</span> <br>в  @Model.Name</h3>
+                    <p> @Model.Description</p>
+                    <h5 class="pt-3">Нас можно найти:</h5>
+                    <h5>@Model.Adres  тел:@Model.Phone</h5>
+                    @if (string.IsNullOrEmpty(Model.Site))
+                    {<h5>сайт: @Model.Site </h5>}
+                    @if (string.IsNullOrEmpty(@Model.Mail))
+                    {<h5>сайт: @Model.Mail </h5>}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="section-top2 text-center">
+            <h3>Вы можете забронировать онлайн у нас места в залах:</h3>
+
+        </div>
+    </div>
+</div>
+<div class="text-center">
+
+    @foreach (var hall in Model.halls)
+    {
+        <h3><a asp-controller="Halls" asp-action="BookingHall" asp-route-id="@hall.ID">Выбрать @hall.Name</a></h3>
+        <h5>@hall.Description</h5>
+    }
+
+</div>
+<section class="update-area section-padding">
+    <div class="container">
+        
+        <div class="row">
+            @if (Model.pictures.Count > 1)
+            {
+                foreach (var u in Model.pictures)
+                {
+                    if (!u.PathToImg.Contains("main"))
+                    {
+                        <div class="col-md-4">
+                            <div class="single-food">
+                                <div class="food-img">
+                                    <img src="@u.PathToImg" class="img-fluid" alt="">
+                                </div>
+                                <p>Описание зала</p>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</section>
+

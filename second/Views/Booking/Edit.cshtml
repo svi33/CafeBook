@@ -1,0 +1,99 @@
+﻿@model second.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+
+
+
+            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+
+
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label class="control-label">Название стола: @ViewBag.TableName</label>
+                <input type="hidden" asp-for="TableID" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreated" class="control-label">Время размещения заказа:</label>
+                <label>@Model.DateCreated</label>
+                <input type="hidden" asp-for="DateCreated" />
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckIn" class="control-label">Время бронирования:</label>
+                <label>@Model.CheckIn</label>
+                <input type="hidden" asp-for="CheckIn" />
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckOut" class="control-label">Время снятия бронирования:</label>
+                <label>@Model.CheckOut</label>
+                <input type="hidden" asp-for="CheckOut" />
+                @*<input asp-for="CheckOut" class="form-control" />
+            <span asp-validation-for="CheckOut" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="Guests" class="control-label">Количество гостей:</label>
+                <input asp-for="Guests" class="form-control" value="@Model.Guests" />
+                <span asp-validation-for="Guests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalFee" class="control-label">Цена заказа:</label>
+                <input asp-for="TotalFee" class="form-control" value="@Model.Guests" />
+                <span asp-validation-for="TotalFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Paid" /> Подтверждение заказа@*@Html.DisplayNameFor(model => model.Paid)*@
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Completed" />  Положительный отзыв@*@Html.DisplayNameFor(model => model.Completed)*@
+                    </label>
+                </div>
+            </div>
+            <input type="hidden" asp-for="CheckTable" />
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label">Заказчик:</label>
+                <label>@Model.CustomerName</label>
+                <input type="hidden" asp-for="CustomerName" />
+                @*<input asp-for="CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerPhone" class="control-label">Телефон:</label>
+                <label>@Model.CustomerPhone</label>
+                <input type="hidden" asp-for="CustomerPhone" />
+                @*<input asp-for="CustomerPhone" class="form-control" />
+        <span asp-validation-for="CustomerPhone" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherRequests" class="control-label">Примечания:</label>
+                <input asp-for="OtherRequests" class="form-control" />
+                <span asp-validation-for="OtherRequests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href='javascript:history.go(-1)'>Назад</a>
+</div>
+

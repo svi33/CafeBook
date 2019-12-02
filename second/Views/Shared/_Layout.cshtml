@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CafeBook</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <link rel="stylesheet" href="~/assets/css/style.css" />
+    <section class="banner-area banner-area2 menu-bg text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1><i>CafeBook</i></h1>
+                    <p class="pt-2"><i>Самый простой способ не остаться голодным.</i></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <header class="header-area header-area2">
+        <div class="container">
+            <p></p>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="logo-area">
+                        <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/images/logo/logo2.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="custom-navbar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu main-menu2">
+                        <ul class="nav navbar-nav">
+                            <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная </a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="About">Про нас</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Контакт</a></li>
+
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>
+
+                                    <a asp-area="" asp-controller="Account" asp-action="LogOff"> @User.Identity.Name->Выход</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-controller="Account" asp-action="Login">Вход</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Account" asp-action="Register">Регистрация</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> All rights reserved | CafeBook
+            </p>
+        </footer>
+    </div>
+
+    <environment include="Development">
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+
+
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+    </environment>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

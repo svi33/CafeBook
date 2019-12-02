@@ -1,0 +1,34 @@
+﻿@model second.ViewModels.RegisterViewModel
+<h2>Регистрация нового пользователя</h2>
+<form method="post" asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="FullName">Имя:</label><br />
+        <input asp-for="FullName" />
+        <span asp-validation-for="FullName"></span>
+    </div>
+    <div>
+        <label asp-for="PersonPhone">Телефон:</label><br />
+        <input asp-for="PersonPhone" />
+        <span asp-validation-for="PersonPhone"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordConfirm"></label><br />
+        <input asp-for="PasswordConfirm" />
+        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+    <div>
+        <p></p>
+        <input  class="genric-btn info-border radius" type="submit" value="Регистрация" />
+    </div>
+</form>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<second.Models.Hall>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Залы в @ViewBag.Cafe.Name</h2>
+
+<p>
+    <a asp-action="Create" asp-controller="Halls">Добавить новый зал</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Название зала
+            </th>
+            <th>
+               Описание
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-controller="Halls" asp-route-id="@item.ID">Редактировать</a> |
+                    <a asp-action="SeeDetails" asp-controller="Halls" asp-route-id="@item.ID">Схема зала</a> |
+                    <a asp-action="Delete" asp-controller="Halls" asp-route-id="@item.ID">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="Restaurant" asp-action="Index">Перейти к описанию ресторана</a>

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<second.Models.Restaurants>
+
+
+@{
+    ViewData["Title"] = "Start Page";
+}
+
+<div>
+    <section class="food-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="section-top">
+                        <h3><span class="style-change">Наш сервис</span> <br>вкусная еда</h3>
+                        <p class="pt-3">Доступные к бронированию рестораны:</p>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+                <div class="row">
+
+                
+                @foreach (var cafe in Model)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="single-food">
+                            <div class="food-img">
+                                @if (@cafe.pictures.Count > 0)
+                                {
+                                    if (@cafe.pictures.Any(p => p.PathToImg.Contains("main")))
+                                    {<img src="@cafe.pictures.First(p => p.PathToImg.Contains("main")).PathToImg" class="img-fluid" alt=""> }
+                                    else
+                                    {<img src="@cafe.pictures.First().PathToImg" class="img-fluid" alt=""> }
+                                }
+                                else
+                                {<img src = "assets/images/food2.jpg" class="img-fluid" alt="">}
+                            </div>
+                            <div class="food-content">
+                                 <div class="d-flex justify-content-between">
+                                    <h5>@cafe.Name  </h5>
+                                    <span class="style-change">
+                                     @cafe.Description
+                                    </span>
+                                @if (cafe.halls.Count > 0)
+                                {<h5>
+                                    <a asp-controller="Restaurant" asp-action="Details" asp-route-id="@cafe.ID">Забронировать</a>
+                                </h5>}
+                                else
+                                {<p class="pt-3">Контактный номер: @cafe.Phone </p>}
+
+                            </div>
+                        </div>
+                        </div>
+                     </div>
+                 } 
+
+                </div>
+        </div>
+    </section>
+    <a asp-controller="Restaurant" asp-action="Index">Рестораторам</a>
+</div>

@@ -1,0 +1,242 @@
+﻿@model second.ViewModels.HallBokingViewModel
+
+@{
+    ViewData["Title"] = "BookingHall";
+}
+<link rel="stylesheet" href="~/css/MyStyle.css" />
+
+<link rel="stylesheet" type="text/css" href="~/lib/xdpicker/jquery.datetimepicker.min.css"/ >
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="~/lib/xdpicker/jquery.datetimepicker.full.min.js"></script>
+<h3>Забронировать столик:</h3>
+<h5>
+    Ведите/выберите дату для бронирования:
+    <input id="datetimepicker" type="text">
+    <button class="genric-btn info-border radius" id="takebtn"> подтвердить дату </button>
+</h5>
+<p></p>
+
+<div class="modal fade" id="MyModal">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">&times;</a>
+            <h3 id="ModalTitle">Завершение бронирования</h3>
+        </div>
+        <div class="modal-body">
+            <form id="form">
+                <fieldset id="SubmitForm">
+                   <input  id ="tableid" type="hidden" />
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.TempBooking.CustomerName, new { @id = "customerName", @class = "form-control", @placeholder = "Имя" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.TempBooking.CustomerPhone, new { @id = "customerPhone", @class = "form-control", @placeholder = "012-34567" })
+                    </div>
+                    <div>
+                        <p>
+                            <label for="time">Время: </label>
+                            <input type="number" step="1" min="1" max="10" value="1" id="time" />
+                            <label for="guest">Число гостей: </label>
+                            <input type="number" step="1" min="1" max="10" value="1" id="guest" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="btn btn-block btn-danger" id="SetBooking">Забронировать</a>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<button id="loadtable" type="button" style="visibility:hidden">
+    click
+</button>
+<div id="hall" style="height: 30em;  width: 100%; border: 4px double black;"></div>
+
+
+
+<script>
+    var queryArr = [];
+    var tableArr = [];
+    var currentdate = new Date(); 
+    //var datetime = currentdate.getDate() + "/"
+    //    + (currentdate.getMonth() + 1) + "/"
+    //    + currentdate.getFullYear() + " "
+    //    + currentdate.getHours() + ":"
+    //    + currentdate.getMinutes(); 
+    var datetime = currentdate.getFullYear() + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getDate() + " "
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes(); 
+
+    var bookDate = datetime;
+
+    var hall = $('#hall').position();
+    $(document).ready(function ()  {
+        getBook();
+        getTable();
+     });
+    
+    function selEl(select) {
+        var index = -1;
+      
+        queryArr.forEach(element => {
+        });
+        if (index !== -1) {
+            alert('!');    
+        };
+
+        $("#tableid").val(select);
+        $("#ModalTitle").html("Для подтверждения введите Имя и номер телефона для связи:");
+        $("#MyModal").modal();
+    };
+
+    function getTable() {
+        queryArr.length = 0;
+
+        @foreach (var temp in Model.hall.tables)
+        {
+        <text>
+            var elArr = document.createElement("div");
+
+            elArr.setAttribute('name', '@temp.Name');
+            elArr.setAttribute('id', "'@temp.ID'");
+            var flag = true;
+            tableArr.forEach(element => {
+                if (elArr.getAttribute("id").indexOf(element)!=-1)flag=false;
+            });
+
+            if(flag)
+            elArr.innerHTML = '<p>' + '@temp.Name' + '</p><p>' + '@temp.Description' + '</p><button  onclick="selEl(' +
+            elArr.getAttribute("id") + ')" >ОК</button>';
+            else
+            elArr.innerHTML = '<p>' + '@temp.Name' + '</p><p>' + '@temp.Description' + '</p><p>Занят</p>';
+        
+            elArr.classList.add('Desk');
+
+
+            queryArr.push(
+                $(elArr).appendTo("#hall"));
+            elArr.setAttribute('style', ' position: absolute; top:' + (@temp.CoordinateY+hall.top) + 'px; left:' + (@temp.CoordinateX+hall.left) + 'px;');
+ 
+
+        </text>
+         }
+
+        tableArr.length = 0;
+    };
+
+    jQuery('#datetimepicker').datetimepicker();
+    jQuery('#takebtn').on('click', function () {
+        var d = $('#datetimepicker').val();
+        //alert(d);
+
+        if (d < bookDate)
+        {
+            alert("Выберите правильное время и дату!");
+            return;
+        }
+        bookDate = d;
+       
+        var jsonObject = {
+                "hall": '@Model.hall.ID',
+                "bookdate": d
+            };
+
+        $('#hall').empty();
+        jsonStr = JSON.stringify(jsonObject);
+        CheckBookingTable(jsonStr);
+    });
+
+    function CheckBookingTable(jsonStr) {
+
+        var url = '/DeskAdd/Checktable/';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: jsonStr,
+
+            success: function (data) {
+
+                if (data != null) {
+                    tableArr.length = 0;
+                    data.forEach(element => {
+                        tableArr.push(element);
+                    });
+                }
+                getTable();
+            },
+            error: function () {
+                alert("error ");
+            }
+        })
+    }
+
+    $("#SetBooking").click(function () {
+
+        var jsonObject = {
+
+            "CustomerName": $('#customerName').val(),
+            "CustomerPhone": $('#customerPhone').val(),
+            "CheckIn": bookDate,
+            "Time": $('#time').val(),
+            "Guests": $('#guest').val(),
+            "TableID": $('#tableid').val(),
+        };
+
+        jsonStr = JSON.stringify(jsonObject);
+
+        var url = '/Booking/Bookingtable/';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: jsonStr,
+            success: function (result) {
+                alert(result);
+                $("#MyModal").modal("hide");
+                ResultCheck();
+            },
+            error: function () {
+                alert("Необходимо правильно заполнить все поля! ");
+            }
+        })
+    })
+
+    function getBook() {
+        @foreach (var temp in Model.hall.tables)
+        {
+        <text>
+         var tempTable = "@temp.ID";
+
+
+            tableArr.push(tempTable);
+ 
+
+        </text>
+         }
+        
+    }
+    function ResultCheck() {
+         var d = $('#datetimepicker').val();
+        bookDate = d;
+        var jsonObject = {
+                "hall": '@Model.hall.ID',
+                "bookdate": d
+            };
+
+        $('#hall').empty();
+        jsonStr = JSON.stringify(jsonObject);
+        CheckBookingTable(jsonStr);
+    }
+
+</script>

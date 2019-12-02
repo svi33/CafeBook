@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "ManageBooking";
+}
+
+<h3>Доброго дня @ViewBag.UserName </h3>
+
+В @ViewBag.CafeName имеются новые заказы:
+
+Для уточнения просмотра выберите дату начала:
+
+Выберите зал бронирование которого хотите посмотреть:
+
+<div id="bookingList">
+    @{await Html.RenderPartialAsync("GetBookingData", new  { RestarauntID = @ViewBag.CafeID, CheckIn = DateTime.Now });}
+</div>
+
+@*<form asp-action="GetBookingData" asp-controller="Restaurant" method="POST" data-ajax="true" data-ajax-update="divEmp">
+    <input type="text" name="name" />
+    <input type="submit" value="Поиск" />
+ </form>
+    <div id="results"></div>*@

@@ -1,0 +1,137 @@
+﻿@model second.Models.Hall
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link rel="stylesheet" href="~/css/MyStyle.css" />
+
+
+
+<div>
+    <h5>Зал</h5>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Название:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Описание:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.restaurant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.restaurant.ID)
+        </dd>*@
+    </dl>
+</div>
+
+
+<div>
+    <button id="addtable">
+        Добавить стол
+    </button>
+    <div id="hall" style="height: 30em;  width: 100%; border: 4px double black;"></div>
+    <button id="getdata">Сохранить новую планировку</button>
+    @*<div style="height: 5em; width: 100%; border: 2px solid green;"><p id="tabledata">Table pos will be here</p></div>*@
+</div>
+
+
+
+
+
+<h5>
+   <a asp-action="SeeDetails" asp-route-id="@Model.ID">Просмотр результата</a> |
+   <a asp-action="Index" asp-route-id="@Model.RestaurantID">Назад</a>
+</h5>
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script>
+    var queryArr = [];
+    var hall = $('#hall').position();
+    $(function () {
+
+
+        $("#addtable").click(function () {
+            var elArr = document.createElement("div");
+            elArr.setAttribute('name', "Table_");
+            elArr.setAttribute('id', "table" + queryArr.length);
+            elArr.innerHTML = '<input type="text" placeholder="Название" size="6"> <input type="text" placeholder="описание" size="6"><button  onclick="delEl(' +
+                elArr.getAttribute("id") + ')" >X</button>';
+            queryArr.push(
+                $(elArr).appendTo("#hall").draggable()
+            );
+            $('div[name=Table_]').draggable({ containment: "#hall", });
+
+        });
+
+
+        $("#getdata").click(function () {
+            var tables = [];
+            $("#tabledata").text('');
+            queryArr.forEach(element => {
+                var pos = element.position();
+                var Tname = element.find(">:first-child").val();
+                var Clnam = element.find(">:nth-child(2)").val();
+
+                var Temp = { Name: Tname, Description: Clnam, CoordinateX: (pos.left-hall.left), CoordinateY: (pos.top-hall.top ) };
+
+                tables.push(Temp);
+               
+            });
+            //$("#tabledata").text(jsonStr);
+            var jsonObject = {
+                "hall": '@Model.ID',
+                "tables": tables
+            };
+
+            jsonStr = JSON.stringify(jsonObject);
+            
+            EditProjectRecord(jsonStr);
+        });
+
+
+
+    });
+
+    function delEl(select) {
+        var index = -1;
+        queryArr.forEach(element => {
+            if (element.attr('id') == select.getAttribute('id')) index = queryArr.indexOf(element);
+        });
+        if (index !== -1) queryArr.splice(index, 1);
+        select.parentNode.removeChild(select);
+    };
+
+    function EditProjectRecord(jsonStr) {
+        //alert(jsonStr);
+        var url = '/DeskAdd/Changetable/' ;
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: jsonStr,
+
+            success: function (data) {
+                 alert("Новая планировка сохранена");
+                 //$("#tabledata").text(jsonStr);
+            },
+            error: function () {
+                alert("error !!!");
+            }
+        })
+    }
+</script>
+
+

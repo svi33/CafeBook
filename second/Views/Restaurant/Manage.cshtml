@@ -1,0 +1,96 @@
+﻿@using second.ViewModels.ManagerViews
+@model IndexVIewModel
+@addTagHelper "*, second"
+@{
+    ViewData["Title"] = "Manage";
+}
+<p></p>
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Выберите дату начала:</label>
+        @Html.TextBox("date", Model.FilterViewModel.SelectedDate, new { @type = "date", @class = "form-control datepicker", @Value = Model.FilterViewModel.SelectedDate.ToString("yyyy-MM-dd") })
+        <label class="control-label">Выберите зал:</label>
+        @Html.DropDownList("company", Model.FilterViewModel.Halls as SelectList,
+                htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+
+<h1>Список </h1>
+<a asp-action="Create" asp-controller="Booking">Добавить</a>
+<table class="table">
+    <tr>
+        <th>
+            <a asp-action="Manage" asp-controller="Restaurant"
+               asp-route-sortOrder="@(Model.SortViewModel.HallSort)"
+               asp-route-date="@(Model.FilterViewModel.SelectedDate)"
+               asp-route-company="@(Model.FilterViewModel.SelectedHall)">
+                Название зала
+            </a>
+        </th>
+        <th> Название стола </th>
+        <th>
+            <a asp-action="Manage" asp-controller="Restaurant"
+               asp-route-sortOrder="@(Model.SortViewModel.CheckInSort)"
+               asp-route-date="@(Model.FilterViewModel.SelectedDate)"
+               asp-route-company="@(Model.FilterViewModel.SelectedHall)">
+                Дата бронирования
+            </a>
+        </th>
+        <th> Завершение бронирования </th>
+        <th> Клиент </th>
+        <th>
+            <a asp-action="Manage" asp-controller="Restaurant"
+               asp-route-sortOrder="@(Model.SortViewModel.PhoneSort)"
+               asp-route-date="@(Model.FilterViewModel.SelectedDate)"
+               asp-route-company="@(Model.FilterViewModel.SelectedHall)">
+                Телефон
+            </a>
+        </th>
+        <th> Гостей </th>
+        <th> Подтвержден </th>
+        <th> Выполнен </th>
+        <th> Действия </th>
+    </tr>
+    @foreach (var u in Model.Bookings)
+    {
+        <tr>
+            <td>@u.HallName</td>
+            <td>@u.TableName</td>
+            <td>@u.CheckIn</td>
+            <td>@u.CheckOut</td>
+            <td>@u.CustomerName</td>
+            <td>@u.CustomerPhone</td>
+            <td>@u.Guests </td>
+            <td>
+                @if (@u.Paid)
+                {<text>ДА</text> }
+            else
+            {<text>НЕТ</text>}
+            </td>
+            <td>
+                @if (@u.Completed)
+                {<text>ДА</text> }
+            else
+            {<text>НЕТ</text>}
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-controller="Booking" asp-route-id="@u.BookingID">edit </a>
+                <a asp-action="Delete" asp-controller="Booking" asp-route-id="@u.BookingID">del </a>
+            </td>
+        </tr>
+    }
+
+
+</table>
+
+<page-link page-model="Model.PageViewModel" page-action="Manage"
+           page-url-date="@(Model.FilterViewModel.SelectedDate)"
+           page-url-company="@(Model.FilterViewModel.SelectedHall)"
+           page-url-sortOrder="@(Model.SortViewModel.Current)">
+
+</page-link>
+
+<a asp-controller="Restaurant" asp-action="Index">Вернуться</a>

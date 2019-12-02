@@ -1,0 +1,89 @@
+﻿@model IEnumerable<second.ViewModels.ManageBookingViewModel>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HallName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.TableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Guests)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Paid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Completed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerPhone)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HallName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guests)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Paid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Completed)
+            </td>
+
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BookingID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BookingID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BookingID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

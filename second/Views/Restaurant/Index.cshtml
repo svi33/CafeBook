@@ -1,0 +1,96 @@
+﻿@model second.Models.Restaurants
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p></p>
+
+<div>
+    <h4>Restaurants</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Название Ресторана:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+           Адрес:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adres)
+        </dd>
+        <dt>
+            Телефон
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Site)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Site)
+        </dd>
+        <dt>
+            Описание:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            Дополнительно:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MoreOption)
+        </dd>
+
+    </dl>
+
+</div>
+<div>
+    <a class="genric-btn info-border radius" asp-controller="Restaurant" asp-action="Edit" asp-route-id="@Model.ID">Редактировать описание</a>
+</div>
+<p></p>
+<a class="genric-btn warning-border radius" asp-controller="Restaurant" asp-action="Manage" >управление заказами</a>
+<p></p>
+<h3>Фотоописание</h3>
+<div>
+    @if (Model.pictures != null)
+    {
+        @foreach (var f in Model.pictures)
+        {
+            <p><img src="@Url.Content(f.PathToImg)"><a class="genric-btn danger-border radius" asp-action="DelFile" asp-route-id="@f.ID">Удалить </a></p>
+        }
+    }
+    <p>Выберите файл для загрузки</p>
+    <form asp-action="AddFile" asp-controller="Restaurant" method="post" enctype="multipart/form-data" asp-route-id="@Model.ID">
+
+        <input  type="file" name="uploads" multiple /><br>
+        <input class="genric-btn success-border radius" type="submit" value="Загрузить" />
+    </form>
+
+</div>
+
+<h3>Залы ресторана</h3>
+<dt>
+    @if (Model.halls != null)
+    {
+        @foreach (var h in Model.halls)
+        {
+            
+            <p>@h.Name</p>
+        }
+    }
+    <a class="genric-btn success-border radius" asp-controller="Halls" asp-action="Index" asp-route-id="@Model.ID">Редактировать Залы... </a>
+
+</dt>

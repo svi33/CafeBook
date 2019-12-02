@@ -1,0 +1,80 @@
+﻿@model second.Models.Hall
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link rel="stylesheet" href="~/css/MyStyle.css" />
+
+
+<div>
+    <h5>Зал</h5>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Название:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Описание:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.restaurant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.restaurant.ID)
+        </dd>*@
+    </dl>
+</div>
+
+<button id="loadtable" type="button" style="visibility:hidden">
+    click
+</button>
+<div id="hall" style="height: 30em;  width: 100%; border: 4px double black;"></div>
+
+
+<div>
+    <a asp-action="Details" asp-route-id="@Model.ID">Изменить схему зала</a> |
+    <a asp-action="Index" asp-route-id="@Model.RestaurantID">Назад</a>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script>
+    var queryArr = [];
+    var hall = $('#hall').position();
+    $(document).ready(function ()  {
+
+
+        @foreach (var temp in Model.tables)
+        {
+        <text>
+            var elArr = document.createElement("div");
+
+            elArr.setAttribute('name', '@temp.Name');
+            elArr.setAttribute('id', '@temp.ID');
+            elArr.innerHTML = '<p>' + '@temp.Name' + '</p><p>' + '@temp.Description' + '</p>';
+
+            elArr.classList.add('Desk');
+
+            queryArr.push(
+                $(elArr).appendTo("#hall"));
+            elArr.setAttribute('style', ' position: absolute; top:' + (@temp.CoordinateY+hall.top) + 'px; left:' + (@temp.CoordinateX + hall.left ) + 'px;');
+
+
+        </text>
+         }
+
+    });
+
+
+
+
+
+</script>
